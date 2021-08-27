@@ -4,11 +4,11 @@ public class Animation {
 
     Image[] image;
 
-    int current = 1;
+    int current = 0;
 
     final int STILL = 0;
 
-    int delay;
+    int delay = 10;
 
     public Animation(String name, int count, String fileType) {
         image = new Image[count];
@@ -27,7 +27,7 @@ public class Animation {
             if(delay == 0) {
                 current++;
                 if(current == image.length) {
-                    current = 1;
+                    current = 0;
                 }
                 delay = 6;
             }
@@ -40,7 +40,7 @@ public class Animation {
             if(delay == 0) {
                 current++;
                 if(current == image.length) {
-                    current = 1;
+                    current = 0;
                 }
                 delay = 10;
             }
@@ -49,6 +49,20 @@ public class Animation {
 
             return image[current];
         }
+    }
+
+    public Image deathAnimation() {
+        if(delay == 0) {
+            current++;
+
+            if(current == image.length) {
+                current = 9;
+            }
+            delay = 10;
+        }
+        delay--;
+
+        return image[current];
     }
 
     public Image getStillImage() {

@@ -9,8 +9,11 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
 
     //String[] pose = {"_up_", "_dn_", "_lt_", "_rt_"};
 
+    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
+    // can't figure out how to make sprite bigger/smaller
     Sprite ranger1 =
-            new Sprite(100, 100, 100, 100, "rg", Ranger.pose, 10, "PNG" );
+            new Sprite(100, 100, (int)(screen.width*.5), (int)(screen.height*.5), "rg", Ranger.pose, 10, "PNG" );
 
 //    Animation rgRt = new Animation("rg_rt_", 10, "PNG");
 
@@ -75,6 +78,8 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
             move_Computer_Controlled_Entities();
 
             resolve_Collisions();
+
+            Sprite.isIdle = true;
 
             repaint();
 
