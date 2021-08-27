@@ -8,17 +8,10 @@ public class MySimpleGame extends GamePanel {
 
     public static int speed = 1;
 
-    //Random random = new Random();
-
-//    Ranger ranger1 = new Ranger(200, 200);
-
-    Rect box = new Rect(200, 200, 5, 5, Color.BLACK);
-
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
     Image grassLand = Toolkit.getDefaultToolkit().getImage("./images/grass_template_2.JPG");
     Image cabin = Toolkit.getDefaultToolkit().getImage("./images/woodcutter_cabin.PNG");
-//    Image ranger = Toolkit.getDefaultToolkit().getImage("./images/rg_rt_0.png");
     int cabinX = (int)(screen.width * .5);
 
     int cabinY = (int)(screen.height * .5);
@@ -45,13 +38,18 @@ public class MySimpleGame extends GamePanel {
 
     @Override
     public void respond_To_User_Keyboard_Input() {
-        if(pressing[UP] || pressing[W]) mySprite.moveUp(speed);
-        if(pressing[DN] || pressing[S]) mySprite.moveDn(speed);
-        if(pressing[LT] || pressing[A]) mySprite.moveLt(speed);
-        if(pressing[RT] || pressing[D]) mySprite.moveRt(speed);
+        if(Sprite.isAlive) {
+            if(pressing[UP] || pressing[W]) mySprite.moveUp(speed);
+            if(pressing[DN] || pressing[S]) mySprite.moveDn(speed);
+            if(pressing[LT] || pressing[A]) mySprite.moveLt(speed);
+            if(pressing[RT] || pressing[D]) mySprite.moveRt(speed);
 
-        if(pressing[SHIFT]) speed = 2;
-        else                speed = 1;
+            if(pressing[SHIFT]) speed = 2;
+            else                speed = 1;
+        }
+
+        if(pressing[SPACE]) mySprite.isAlive = false;
+        if(pressing[COMMA]) mySprite.revive();
     }
 
     public void paint(Graphics gfx) {
@@ -63,14 +61,7 @@ public class MySimpleGame extends GamePanel {
 
         gfx.drawImage(cabin, cabinX, cabinY, cabinWidth, cabinHeight, null);
 
-//        gfx.drawImage(ranger, 100, 100, 100, 100, null);
-
         ranger1.draw(gfx);
-//        mySprite.draw(gfx);
-
-//        rgRt.draw(gfx);
-
-        box.draw(gfx);
     }
 
     @Override
