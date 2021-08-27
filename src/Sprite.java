@@ -18,8 +18,8 @@ public class Sprite extends Rect {
     final int IDLE_DOWN = 4;
     final int IDLE_LEFT = 5;
     final int IDLE_RIGHT = 6;
-    final int DEATH_LEFT = 7;
-    final int DEATH_RIGHT = 8;
+    final int DIE_FACING_LEFT = 7;
+    final int DIE_FACING_RIGHT = 8;
 
     boolean isMoving  = false;
 
@@ -31,8 +31,8 @@ public class Sprite extends Rect {
 
     public void revive() {
         isAlive = true;
-        animation[DEATH_LEFT].current = 0;
-        animation[DEATH_RIGHT].current = 0;
+        animation[DIE_FACING_LEFT].current = 0;
+        animation[DIE_FACING_RIGHT].current = 0;
     }
 
     // FIX ME: This method is taking in width & height but at this time the values are not reflecting upon construction of sprite
@@ -132,10 +132,10 @@ public class Sprite extends Rect {
         }
         else {
             if(motion % 2 == 1) {
-                gfx.drawImage(animation[DEATH_RIGHT].deathAnimation(), (int)px, (int)py, w, h, null);
+                gfx.drawImage(animation[DIE_FACING_RIGHT].deathAnimation(), (int)px, (int)py, w, h, null);
             }
             else {
-                gfx.drawImage(animation[DEATH_LEFT].deathAnimation(), (int)px, (int)py, w, h, null);
+                gfx.drawImage(animation[DIE_FACING_LEFT].deathAnimation(), (int)px, (int)py, w, h, null);
             }
         }
     //        gfx.drawImage(animation[motion].getCurrentImage(), x, y, 100, 250, null);

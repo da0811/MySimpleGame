@@ -60,9 +60,13 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
 
         initialize();
 
+//        setDoubleBuffered(true); // did not fix flickering sprite
+
         thread1 = new Thread(this);
 
         thread1.start();
+
+//        setFocusable(true); // saw in sample code, need to look this up
 
         requestFocus();
     }
@@ -73,6 +77,7 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
 //        int speed = 2;
 
         while(true) {
+
             respond_To_User_Keyboard_Input();
 
             move_Computer_Controlled_Entities();
