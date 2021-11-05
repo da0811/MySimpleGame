@@ -30,6 +30,8 @@ public class MySimpleGame extends GamePanel {
 
     int ny = 0;
 
+    Line cabinDoor = new Line(cabinX + 300, cabinY + 240, cabinX + 340, cabinY + 255);
+
 
 
     public void initialize() {
@@ -62,6 +64,8 @@ public class MySimpleGame extends GamePanel {
         gfx.drawImage(cabin, cabinX, cabinY, cabinWidth, cabinHeight, null);
 
         ranger1.draw(gfx);
+        
+        cabinDoor.draw(gfx);
     }
 
     @Override
