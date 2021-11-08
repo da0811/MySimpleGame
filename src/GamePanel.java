@@ -12,12 +12,11 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
     // can't figure out how to make sprite bigger/smaller
-    Sprite ranger1 =
-            new Sprite(100, 100, (int)(screen.width*.5), (int)(screen.height*.5), "rg", Ranger.pose, 10, "PNG" );
+    //Sprite ranger1 = new Sprite(100, 100, (int)(screen.width*.5), (int)(screen.height*.5), "rg", Ranger.pose, 10, "PNG" );
 
 //    Animation rgRt = new Animation("rg_rt_", 10, "PNG");
 
-    Sprite mySprite = ranger1;
+    //Sprite mySprite = ranger1;
 
     public final static int UP = KeyEvent.VK_UP;
     public final static int DN = KeyEvent.VK_DOWN;
@@ -28,6 +27,7 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
     public final static int S = KeyEvent.VK_S;
     public final static int A = KeyEvent.VK_A;
     public final static int D = KeyEvent.VK_D;
+    public final static int F = KeyEvent.VK_F;
 
     public final static int CTRL   = KeyEvent.VK_CONTROL;
     public final static int SHIFT  = KeyEvent.VK_SHIFT;

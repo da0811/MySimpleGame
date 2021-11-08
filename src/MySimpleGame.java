@@ -12,6 +12,9 @@ public class MySimpleGame extends GamePanel {
 
     Image grassLand = Toolkit.getDefaultToolkit().getImage("./images/grass_template_2.JPG");
     Image cabin = Toolkit.getDefaultToolkit().getImage("./images/woodcutter_cabin.PNG");
+
+    Sprite ranger1 = new Sprite(100, 100, (int)(screen.width*.5), (int)(screen.height*.5),"rg", Ranger.pose, 10, "PNG" );
+
     int cabinX = (int)(screen.width * .5);
 
     int cabinY = (int)(screen.height * .5);
@@ -32,26 +35,33 @@ public class MySimpleGame extends GamePanel {
 
     Line cabinDoor = new Line(cabinX + 300, cabinY + 240, cabinX + 340, cabinY + 255);
 
+    Arrow arrow = new Arrow(-1000, 0, 0,"arrow.png");
 
 
     public void initialize() {
-        mySprite = ranger1;
+        //mySprite = ranger1;
+
     }
 
     @Override
     public void respond_To_User_Keyboard_Input() {
         if(Sprite.isAlive) {
-            if(pressing[UP] || pressing[W]) mySprite.moveUp(speed);
-            if(pressing[DN] || pressing[S]) mySprite.moveDn(speed);
-            if(pressing[LT] || pressing[A]) mySprite.moveLt(speed);
-            if(pressing[RT] || pressing[D]) mySprite.moveRt(speed);
+            if(pressing[UP] || pressing[W]) ranger1.moveUp(speed);
+            if(pressing[DN] || pressing[S]) ranger1.moveDn(speed);
+            if(pressing[LT] || pressing[A]) ranger1.moveLt(speed);
+            if(pressing[RT] || pressing[D]) ranger1.moveRt(speed);
 
             if(pressing[SHIFT]) speed = 2;
             else                speed = 1;
+            if(pressing[F]) { ranger1.shoot(arrow);
+
+
+            }
+
         }
 
-        if(pressing[SPACE]) mySprite.isAlive = false;
-        if(pressing[COMMA]) mySprite.revive();
+        if(pressing[SPACE]) ranger1.isAlive = false;
+        if(pressing[COMMA]) ranger1.revive();
     }
 
     public void paint(Graphics gfx) {
@@ -64,7 +74,9 @@ public class MySimpleGame extends GamePanel {
         gfx.drawImage(cabin, cabinX, cabinY, cabinWidth, cabinHeight, null);
 
         ranger1.draw(gfx);
-        
+        arrow.draw(gfx);
+
+        gfx.setColor(Color.red);
         cabinDoor.draw(gfx);
     }
 
@@ -78,9 +90,13 @@ public class MySimpleGame extends GamePanel {
         my = event.getY();
     }
 
+
     @Override
     public void move_Computer_Controlled_Entities() {
         // enemies, fauna
+
+        arrow.move();
+
     }
 
     @Override
