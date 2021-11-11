@@ -29,6 +29,10 @@ public class Sprite extends Rect {
 
     static boolean isAlive = true;
 
+    int stamina = 100;
+
+    Arrow[] arrows = new Arrow[20];
+
     public void revive() {
         isAlive = true;
         animation[DIE_FACING_LEFT].current = 0;
@@ -139,6 +143,9 @@ public class Sprite extends Rect {
             }
         }
     //        gfx.drawImage(animation[motion].getCurrentImage(), x, y, 100, 250, null);
+    }
+    public void shoot(Arrow arrow){
+        arrow.fire(px, py, 0, 30);
     }
 
 
