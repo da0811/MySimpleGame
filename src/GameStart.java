@@ -4,7 +4,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.*;
 
 public class GameStart extends JFrame {
-    static GamePanel gamePanel = new MySimpleGame();
+    static MySimpleGame gamePanel = new MySimpleGame();
 
     static Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -17,8 +17,8 @@ public class GameStart extends JFrame {
     public GameStart() {
         setTitle("Game");
 
-        setSize((int)(screen.width*.9),
-                (int)(screen.height*.9));
+        setSize((int)(screen.width),
+                (int)(screen.height * .9));
 
         getContentPane().add(gamePanel);
 

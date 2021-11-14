@@ -1,15 +1,19 @@
 import java.awt.*;
 import java.awt.event.*;
+import javax.naming.ldap.Control;
 import javax.swing.*;
 
 public abstract class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
     boolean mousePressed = false;
 
     boolean[] pressing = new boolean[1024];
+    boolean[] typed = new boolean[1024];
+    boolean[] released = new boolean[1024];
 
     //String[] pose = {"_up_", "_dn_", "_lt_", "_rt_"};
 
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
 
     // can't figure out how to make sprite bigger/smaller
     //Sprite ranger1 = new Sprite(100, 100, (int)(screen.width*.5), (int)(screen.height*.5), "rg", Ranger.pose, 10, "PNG" );
@@ -84,12 +88,12 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
 
             resolve_Collisions();
 
-            Sprite.isIdle = true;
+            //Sprite.isIdle = true;
 
             repaint();
 
             try {
-                thread1.sleep(10);
+                thread1.sleep(15);
             }
             catch (Exception e) {
                 // empty catch
@@ -139,6 +143,7 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
 //        if(event.getKeyCode() == KeyEvent.VK_RIGHT) pressing_RT = true;
 //        if(event.getKeyCode() == KeyEvent.VK_SHIFT) pressing_ST = true;
         pressing[event.getKeyCode()] = true;
+
     }
 
     public void keyReleased(KeyEvent event) {
@@ -148,9 +153,11 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
 //        pressing_RT = false;
 //        pressing_ST = false;
         pressing[event.getKeyCode()] = false;
+
     }
 
     public void keyTyped(KeyEvent event) {
-        // FIX ME
+        // FIXME
+
     }
 }

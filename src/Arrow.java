@@ -1,17 +1,24 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Arrow extends Circle {
     double velocityX = 0;
     double velocityY = 0;
 
-    Image image;
+    BufferedImage image;
 
 
-    public Arrow(double x, double y, int angle, String fileName)
+    public Arrow(double x, double y, int angle)
     {
-        super(x, y, 2, 0);
-        this.image = Toolkit.getDefaultToolkit().getImage("./images/" + fileName);
+        super(x, y, 2, angle);
+        try {
+            this.image = ImageIO.read(new File("./images/arrow.png"));
+        } catch (IOException e) {
+        }
+        //this.image = Toolkit.getDefaultToolkit().getImage("./images/" + fileName);
 
     }
 

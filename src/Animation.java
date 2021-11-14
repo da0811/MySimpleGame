@@ -1,8 +1,12 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Animation {
 
-    Image[] image;
+    BufferedImage[] image;
 
     int current = 0;
 
@@ -11,10 +15,14 @@ public class Animation {
     int delay = 10;
 
     public Animation(String name, int count, String fileType) {
-        image = new Image[count];
+        image = new BufferedImage[count];
 
         for(int i = 0; i < count; i++) {
-            image[i] = Toolkit.getDefaultToolkit().getImage("./images/" + name + i + "." + fileType);
+            try {
+                image[i] = ImageIO.read(new File("./images/" + name + i + "." + fileType));
+            } catch (IOException e) {
+            }
+            //image[i] = Toolkit.getDefaultToolkit().getImage("./images/" + name + i + "." + fileType);
         }
     }
 
