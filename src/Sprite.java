@@ -116,7 +116,7 @@ public class Sprite extends Rect {
     public void draw(Graphics gfx) {
         if(isAlive) {
             if(isFiring) {
-                gfx.drawImage(animation[motion].getCurrentImage(), (int)px, (int)py, w, h, null);
+                gfx.drawImage(animation[motion].shootAnimation(), (int)px, (int)py, w, h, null);
                 System.out.println(motion);
             } else if(isMoving) {
                 gfx.drawImage(animation[motion].getCurrentImage(), (int)px, (int)py, w, h, null);
