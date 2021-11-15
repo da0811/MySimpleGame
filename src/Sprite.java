@@ -114,11 +114,13 @@ public class Sprite extends Rect {
 
     public void moveRt(int dx) {
 //        vx += dx;
-        isMoving = true;
+        if(this.px < 150) {
+            isMoving = true;
 
-        motion = RIGHT;
+            motion = RIGHT;
 
-        px += (dx+MySimpleGame.speed);
+            px += (dx + MySimpleGame.speed);
+        }
     }
 
     public void die() {
