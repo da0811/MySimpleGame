@@ -13,7 +13,7 @@ public class StaminaBar extends Rectangle {
         this.x = x;
         this.y = y;
         this.mySprite = mySprite;
-        this.currStamina = mySprite.stamina;
+        //this.currStamina = mySprite.stamina;
     }
 
     public void draw(Graphics pen){

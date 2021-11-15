@@ -12,7 +12,7 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
 
     //String[] pose = {"_up_", "_dn_", "_lt_", "_rt_"};
 
-    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    //Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
 
     // can't figure out how to make sprite bigger/smaller
@@ -78,7 +78,6 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
     public abstract void initialize();
 
     public void run() {
-//        int speed = 2;
 
         while(true) {
 
@@ -87,8 +86,6 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
             move_Computer_Controlled_Entities();
 
             resolve_Collisions();
-
-            //Sprite.isIdle = true;
 
             repaint();
 
@@ -99,22 +96,6 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
                 // empty catch
             }
         }
-//        while(true) {
-//            respond_To_User_Keyboard_Input();
-//
-//            move_Computer_Controlled_Entities();
-//
-//            resolve_Collisions();
-//
-//            repaint();
-//
-//            try {
-//                thread1.sleep(15);
-//            }
-//            catch (Exception e) {
-//                // empty catch
-//            }
-//        }
     }
 
     public abstract void respond_To_User_Keyboard_Input();
@@ -137,21 +118,11 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
     }
 
     public void keyPressed(KeyEvent event) {
-//        if(event.getKeyCode() == KeyEvent.VK_UP)    pressing_UP = true;
-//        if(event.getKeyCode() == KeyEvent.VK_DOWN)  pressing_DN = true;
-//        if(event.getKeyCode() == KeyEvent.VK_LEFT)  pressing_LT = true;
-//        if(event.getKeyCode() == KeyEvent.VK_RIGHT) pressing_RT = true;
-//        if(event.getKeyCode() == KeyEvent.VK_SHIFT) pressing_ST = true;
         pressing[event.getKeyCode()] = true;
 
     }
 
     public void keyReleased(KeyEvent event) {
-//        pressing_UP = false;
-//        pressing_DN = false;
-//        pressing_LT = false;
-//        pressing_RT = false;
-//        pressing_ST = false;
         pressing[event.getKeyCode()] = false;
 
     }
