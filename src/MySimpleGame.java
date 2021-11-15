@@ -1,17 +1,19 @@
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class MySimpleGame extends GamePanel {
 
     public static int speed = 1;
+    public static int score = 0;
 
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
+    Scoreboard scoreboard;
 
     Image grassLand = Toolkit.getDefaultToolkit().getImage("./images/grass_template_2.JPG");
     Image cabin = Toolkit.getDefaultToolkit().getImage("./images/woodcutter_cabin.PNG");
     Image target = Toolkit.getDefaultToolkit().getImage("./images/target_side_view.png");
-
 
     Sprite ranger1 = new Sprite(100, 100, (int)(screen.width*.5), (int)(screen.height*.5),"rg", Ranger.pose, 10, "PNG" );
 
@@ -44,6 +46,8 @@ public class MySimpleGame extends GamePanel {
             System.out.println("arrow" + i);
         }
 
+        scoreboard = new Scoreboard(100, 100, score);
+
     }
     public void paint(Graphics gfx) {
         gfx.setColor(new Color(100, 100, 100));
@@ -55,9 +59,14 @@ public class MySimpleGame extends GamePanel {
         gfx.drawImage(cabin, cabinX, cabinY, cabinWidth, cabinHeight, null);
         gfx.drawImage(target, screen.width - (screen.width / 5), (screen.height / 2) - (screen.height/3), target.getWidth(null)/2, target.getHeight(null)/2, null);
 
+//        scoreboardLabel.setBounds(150, 100, screen.width, screen.height);
+//        scoreboardLabel.setText("Score: " + score);
+//        add(scoreboardLabel);
+
         //gfx.drawImage(target, screen.width - (screen.width/5), )
 
         ranger1.draw(gfx);
+//        scoreboard.draw(gfx);
 
 
 
@@ -72,6 +81,7 @@ public class MySimpleGame extends GamePanel {
         for(int i = 0; i < arrows.length; i++) {
             arrows[i].draw(gfx);
         }
+        scoreboard.draw(gfx);
     }
 
     @Override
@@ -85,7 +95,8 @@ public class MySimpleGame extends GamePanel {
             if(pressing[SHIFT]) speed = 2;
             else                speed = 1;
             if(pressing[F]){
-                    //ranger1.shoot(arrows[nextArrow]);
+                ranger1.drawBowRight();
+                //ranger1.shoot(arrows[nextArrow]);
 
                 arrows[nextArrow].fire(ranger1.px, ranger1.py, 0, 10);
                 System.out.println("Arrow " + nextArrow + " fired.");

@@ -1,7 +1,10 @@
-import java.awt.*;
 
 public class Ranger extends Sprite {
-    static String[] pose = {"up", "dn", "lt", "rt", "idl_dn", "idl_lt", "idl_rt", "dth_lt", "dth_rt"};
+    static String[] pose = {
+            "up", "dn", "lt", "rt",
+            "idl_dn", "idl_lt", "idl_rt",
+            "dth_lt", "dth_rt",
+            "fire_up", "fire_dn", "fire_lt", "fire_rt"};
 
 
 

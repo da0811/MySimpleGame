@@ -20,7 +20,7 @@ public class Animation {
         for(int i = 0; i < count; i++) {
             try {
                 image[i] = ImageIO.read(new File("./images/" + name + i + "." + fileType));
-            } catch (IOException e) {
+            }catch(IOException ignored) {
             }
             //image[i] = Toolkit.getDefaultToolkit().getImage("./images/" + name + i + "." + fileType);
         }
@@ -57,6 +57,10 @@ public class Animation {
 
             return image[current];
         }
+    }
+
+    public Image getCurrentImagesOnce() {
+        
     }
 
     public Image deathAnimation() {

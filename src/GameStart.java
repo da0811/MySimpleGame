@@ -12,6 +12,7 @@ public class GameStart extends JFrame {
         new GameStart();
 
         gamePanel.init();
+
     }
 
     public GameStart() {
