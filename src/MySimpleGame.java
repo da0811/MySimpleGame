@@ -1,25 +1,30 @@
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class MySimpleGame extends GamePanel {
 
     public static int speed = 1;
 
-    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-
-
     Image grassLand = Toolkit.getDefaultToolkit().getImage("./images/grass_template_2.JPG");
     Image cabin = Toolkit.getDefaultToolkit().getImage("./images/woodcutter_cabin.PNG");
-    Image target = Toolkit.getDefaultToolkit().getImage("./images/target_side_view.png");
+    BufferedImage target;
 
+    Sprite ranger1 = new Sprite(100, 100, 100, 100,"rg", Ranger.pose, 10, "PNG" );
 
-    Sprite ranger1 = new Sprite(100, 100, (int)(screen.width*.5), (int)(screen.height*.5),"rg", Ranger.pose, 10, "PNG" );
+    int cabinX = 1024;
+    int cabinY = 576;
+    int cabinWidth = 682;
+    int cabinHeight = 384;
 
-    int cabinX = (int)(screen.width / 2);
-    int cabinY = (int)(screen.height / 2);
-    int cabinWidth = (int)(screen.width / 3);
-    int cabinHeight = (int)(screen.height / 3);
-    int cabinWidthOffset = cabinX+cabinWidth;
+    int targetX = 1639;
+    int targetY = 192;
+    int targetWidth;
+    int targetHeight;
 
     int mx = 0;
     int my = 0;
@@ -32,45 +37,64 @@ public class MySimpleGame extends GamePanel {
     //Line testLine = new Line(cabinX, cabinY, cabinX + cabinWidth/2, cabinY);
     //Line testLine2 = new Line(cabinX + cabinWidth/2, cabinY, cabinX + cabinWidth/2, cabinY + cabinHeight/2);
 
-    //Arrow arrow1, arrow2;
     Arrow[] arrows = new Arrow[5];
     int nextArrow = 0;
 
+    Line axle;
+    Rect[] targets = new Rect[9];
+
+
+    int tick = 0;
+    boolean checkNextArrow = false;
 
     public void initialize() {
         //mySprite = ranger1;
         for(int i = 0; i < arrows.length; i++){
             arrows[i] = new Arrow(0, i * 10, 0);
-            System.out.println("arrow" + i);
+            //System.out.println("arrow" + i);
         }
+        try {
+            target = ImageIO.read(new File("./images/target_side_view.png"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        targetWidth = target.getWidth(null)/2;
+        targetHeight = target.getHeight(null)/2;
+
+        axle = new Line(1784, 205, 1749, 342, "Center", Color.RED);
+
+        targets[0] = new Rect(1772, 203, 150, 24, "Upper White", Color.WHITE); //Done
+        targets[1] = new Rect(1772, 227, 150, 9, "Upper Black", Color.BLACK); //Done
+        targets[2] = new Rect(1772, 236, 150, 11, "Upper Blue", Color.CYAN); //Done
+        targets[3] = new Rect(1769, 247, 150, 14, "Upper Red", Color.red); //Done
+        targets[4] = new Rect(1768, 261, 150, 22, "Yellow", Color.yellow); //Done
+        targets[5] = new Rect(1765, 283, 150, 12, "Lower Red", Color.red); //Done
+        targets[6] = new Rect(1763, 295, 150, 12, "Lower Blue", Color.CYAN); //Done
+        targets[7] = new Rect(1761, 307, 150, 11, "Lower Black", Color.BLACK); //Done
+        targets[8] = new Rect(1760, 318, 150, 24, "Lower White", Color.WHITE);
 
     }
     public void paint(Graphics gfx) {
         gfx.setColor(new Color(100, 100, 100));
-
-        gfx.fillRect(0, 0, screen.width, screen.height);
-
-        gfx.drawImage(grassLand, 0, 0, screen.width, screen.height, null);
-
+        gfx.fillRect(0, 0, 1920, 1052);
+        gfx.drawImage(grassLand, 0, 0, 1920, 1052, null);
         gfx.drawImage(cabin, cabinX, cabinY, cabinWidth, cabinHeight, null);
-        gfx.drawImage(target, screen.width - (screen.width / 5), (screen.height / 2) - (screen.height/3), target.getWidth(null)/2, target.getHeight(null)/2, null);
 
-        //gfx.drawImage(target, screen.width - (screen.width/5), )
-
+        gfx.drawImage(target, targetX, targetY, targetWidth, targetHeight, null);
         ranger1.draw(gfx);
-
-
-
-        gfx.setColor(Color.BLUE);
-//        topCabin.draw(gfx);
-//        gfx.setColor(Color.magenta);
-//        testLine.draw(gfx);
-//        testLine2.draw(gfx);
-
         gfx.setColor(Color.red);
-        //cabinDoor.draw(gfx);
-        for(int i = 0; i < arrows.length; i++) {
-            arrows[i].draw(gfx);
+        //axle.draw(gfx);
+        //arrows[0].draw(gfx);
+        tick++;
+        if(tick >= 60) { //creates a delay of 1 second to allow time for both loops to finish execution.
+            tick = 60;
+            for (int i = 0; i < targets.length; i++) {
+                targets[i].draw(gfx);
+            }
+
+            for (int i = 0; i < arrows.length; i++) {
+                arrows[i].draw(gfx);
+            }
         }
     }
 
@@ -81,27 +105,29 @@ public class MySimpleGame extends GamePanel {
             if(pressing[DN] || pressing[S]) ranger1.moveDn(speed);
             if(pressing[LT] || pressing[A]) ranger1.moveLt(speed);
             if(pressing[RT] || pressing[D]) ranger1.moveRt(speed);
-
             if(pressing[SHIFT]) speed = 2;
             else                speed = 1;
             if(pressing[F]){
-                    //ranger1.shoot(arrows[nextArrow]);
-
-                arrows[nextArrow].fire(ranger1.px, ranger1.py, 0, 10);
-                System.out.println("Arrow " + nextArrow + " fired.");
-
-                pressing[F] = false;
-                nextArrow++;
-
-
-                if(nextArrow == arrows.length) {
+                checkNextArrow = true;
+                if(nextArrow == arrows.length){
                     nextArrow = 0;
                 }
+                arrows[nextArrow].fire(ranger1.px, ranger1.py, 0, 20);
+                //System.out.println("Arrow " + nextArrow + " fired.");
+                pressing[F] = false;
+                nextArrow++;
+//                if(nextArrow == arrows.length) {
+//                    nextArrow = 0;
+//                }
             }
         }
-
         if(pressing[SPACE]) ranger1.isAlive = false;
         if(pressing[COMMA]) ranger1.revive();
+        if(mousePressed) {
+            System.out.println("x coordinate: " + mx + ", y coordinate: " + my);
+            mousePressed = false;
+        }
+
     }
 
     @Override
@@ -114,13 +140,34 @@ public class MySimpleGame extends GamePanel {
 
     @Override
     public void resolve_Collisions() {
-
+        if(checkNextArrow) {
+            for (int i = targets.length - 1; i >= 0; i--) {
+                if (nextArrow == 0) {
+                    if(!arrows[nextArrow].isOverLapping) {
+                        if (targets[i].isOverlapping(arrows[nextArrow].tip)) {
+                            arrows[nextArrow].isOverLapping = true;
+                            arrows[nextArrow].stop();
+                            Sprite.handleScore(targets[i].name);
+                        }
+                    }
+                } else {
+                    if(!arrows[nextArrow - 1].isOverLapping){
+                        if (targets[i].isOverlapping(arrows[nextArrow - 1].tip)) {
+                            arrows[nextArrow - 1].isOverLapping = true;
+                            arrows[nextArrow - 1].stop();
+                            Sprite.handleScore(targets[i].name);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public void mouseClicked(MouseEvent event) {
         mx = event.getX();
         my = event.getY();
+        mousePressed = true;
     }
 
     @Override

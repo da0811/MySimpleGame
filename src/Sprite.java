@@ -29,7 +29,36 @@ public class Sprite extends Rect {
 
     static boolean isAlive = true;
 
-    int stamina = 100;
+    static int score = 0;
+
+    public static void handleScore(String name) {
+        switch (name) {
+            case "Upper White":
+            case "Lower White":
+                score += 1;
+                System.out.println("1!\nScore is: " + score);
+                break;
+            case "Upper Black":
+            case "Lower Black":
+                score += 3;
+                System.out.println("3!\nScore is: " + score);
+                break;
+            case "Upper Blue":
+            case "Lower Blue":
+                score += 5;
+                System.out.println("5!\nScore is: " + score);
+                break;
+            case "Upper Red":
+            case "Lower Red":
+                score += 7;
+                System.out.println("7!\nScore is: " + score);
+                break;
+            case "Yellow":
+                score += 9;
+                System.out.println("9!\nScore is: " + score);
+                break;
+        }
+    }
 
     //Arrow[] arrows = new Arrow[20];
 

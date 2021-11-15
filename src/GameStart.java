@@ -6,7 +6,7 @@ import javax.swing.*;
 public class GameStart extends JFrame {
     static MySimpleGame gamePanel = new MySimpleGame();
 
-    static Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    static Dimension screen = new Dimension(1920,1080);
 
     public static void main(String[] args) {
         new GameStart();
@@ -17,8 +17,7 @@ public class GameStart extends JFrame {
     public GameStart() {
         setTitle("Game");
 
-        setSize((int)(screen.width),
-                (int)(screen.height * .9));
+        setSize(GameStart.screen.width, GameStart.screen.height);
 
         getContentPane().add(gamePanel);
 

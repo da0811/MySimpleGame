@@ -10,6 +10,10 @@ public class Arrow extends Circle {
 
     BufferedImage image;
 
+    Rect tip; //used to detect collisions between the arrow and target.
+
+    boolean isOverLapping = false;
+
 
     public Arrow(double x, double y, int angle)
     {
@@ -19,6 +23,7 @@ public class Arrow extends Circle {
         } catch (IOException e) {
         }
         //this.image = Toolkit.getDefaultToolkit().getImage("./images/" + fileName);
+        tip = new Rect((int)(x + (image.getWidth(null) / 4)), (int)(y + ((image.getHeight(null) / 2) - 2)), 1, 1, Color.RED);
 
     }
 
@@ -26,6 +31,9 @@ public class Arrow extends Circle {
     {
         this.x = x;
         this.y = y;
+
+        tip.px = x + (image.getWidth(null) / 4) - 1;
+        tip.py = y + (image.getHeight(null) / 2) - 1;
 
         this.angle = angle;
 
@@ -41,12 +49,27 @@ public class Arrow extends Circle {
     {
         x += velocityX;
         y += velocityY;
+
+        tip.px += velocityX;
+        tip.py += velocityY;
+    }
+
+    public void stop(){ //used to stop the arrow and tip once a collision is detected
+
+        velocityX = 0;
+        velocityY = 0;
+
+
+
     }
 
     public void draw(Graphics pen){
 
         //pen.drawImage(image, (int)x, (int)y, null);
         pen.drawImage(image, (int) x, (int) y + 20, (image.getWidth(null) / 4), (image.getHeight(null) / 4), null);
+        pen.setColor(color);
+        tip.draw(pen);
+        //pen.drawRect((image.getWidth(null) / 4), (image.getHeight(null) / 2) - tip.h, tip.w, tip.h);
     }
 
 }

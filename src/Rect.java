@@ -13,7 +13,10 @@ public class Rect {
     int w;
     int h;
 
+    String name;
+
     Color c;
+
 
     public Rect(int x, int y, int w, int h, Color c) {
         this.px = x;
@@ -25,10 +28,22 @@ public class Rect {
         this.c = c;
     }
 
+    public Rect(int x, int y, int w, int h, String name,Color c) {
+        this.px = x;
+        this.py = y;
+
+        this.w = w;
+        this.h = h;
+
+        this.name = name;
+
+        this.c = c;
+    }
+
     public void draw(Graphics gfx) {
         gfx.setColor(c);
 
-        gfx.drawRect((int)px, (int)py, w, h);
+        gfx.fillRect((int)px, (int)py, w, h);
     }
 
     public void setColor(Color c) {
