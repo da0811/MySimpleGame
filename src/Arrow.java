@@ -8,6 +8,9 @@ public class Arrow extends Circle {
     double velocityX = 0;
     double velocityY = 0;
 
+    double ax = 0;
+    double ay = 0.2;
+
     BufferedImage image;
 
     Rect tip; //used to detect collisions between the arrow and target.
@@ -23,7 +26,7 @@ public class Arrow extends Circle {
         } catch (IOException e) {
         }
         //this.image = Toolkit.getDefaultToolkit().getImage("./images/" + fileName);
-        tip = new Rect((int)(x + (image.getWidth(null) / 4)), (int)(y + ((image.getHeight(null) / 2) - 2)), 1, 1, Color.RED);
+        tip = new Rect((int)(x + (image.getWidth(null) / 4)), (int)(y + ((image.getHeight(null) / 2) - 4)), 1, 1, Color.RED);
 
     }
 
@@ -42,13 +45,27 @@ public class Arrow extends Circle {
 
         this.velocityX = speed * Ux;
         this.velocityY = speed * Uy;
+
+        //this.ay = speed * ay;
     }
 
+    public void setVelocity(double vx, double vy) {
+        this.velocityX = vx;
+        this.velocityY = vy;
+    }
+
+    public void setAcceleration(double ax, double ay) {
+        this.ax = ax;
+        this.ay = ay;
+    }
 
     public void move()
     {
         x += velocityX;
         y += velocityY;
+
+        velocityX += ax;
+        velocityY += ay;
 
         tip.px += velocityX;
         tip.py += velocityY;
@@ -58,6 +75,7 @@ public class Arrow extends Circle {
 
         velocityX = 0;
         velocityY = 0;
+        ay = 0;
 
 
 
@@ -68,7 +86,7 @@ public class Arrow extends Circle {
         //pen.drawImage(image, (int)x, (int)y, null);
         pen.drawImage(image, (int) x, (int) y + 20, (image.getWidth(null) / 4), (image.getHeight(null) / 4), null);
         pen.setColor(color);
-        tip.draw(pen);
+        //tip.draw(pen);
         //pen.drawRect((image.getWidth(null) / 4), (image.getHeight(null) / 2) - tip.h, tip.w, tip.h);
     }
 
