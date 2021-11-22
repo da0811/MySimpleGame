@@ -59,6 +59,20 @@ public class Animation {
         }
     }
 
+    public Image shootAnimation() {
+        if(delay == 0) {
+            current++;
+
+            if(current == image.length) {
+                current = 9;
+            }
+            delay = 10;
+        }
+        delay--;
+
+        return image[current];
+    }
+
     public Image deathAnimation() {
         if(delay == 0) {
             current++;

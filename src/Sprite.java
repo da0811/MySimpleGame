@@ -20,42 +20,48 @@ public class Sprite extends Rect {
     final int IDLE_RIGHT = 6;
     final int DIE_FACING_LEFT = 7;
     final int DIE_FACING_RIGHT = 8;
+    final int SHOOT_FACING_UP = 9;
+    final int SHOOT_FACING_DOWN = 10;
+    final int SHOOT_FACING_LEFT = 11;
+    final int SHOOT_FACING_RIGHT = 12;
 
     boolean isMoving  = false;
 
     static boolean isIdle = true;
 
+    static boolean isFiring = false;
+
     int motion = RIGHT;
 
     static boolean isAlive = true;
 
-    static int score = 0;
+
 
     public static void handleScore(String name) {
         switch (name) {
             case "Upper White":
             case "Lower White":
-                score += 1;
-                System.out.println("1!\nScore is: " + score);
+                Scoreboard.score+=1;
+                System.out.println("1!\nScore is: " + Scoreboard.score);
                 break;
             case "Upper Black":
             case "Lower Black":
-                score += 3;
-                System.out.println("3!\nScore is: " + score);
+                Scoreboard.score+=3;
+                System.out.println("3!\nScore is: " + Scoreboard.score);
                 break;
             case "Upper Blue":
             case "Lower Blue":
-                score += 5;
-                System.out.println("5!\nScore is: " + score);
+                Scoreboard.score+=5;
+                System.out.println("5!\nScore is: " + Scoreboard.score);
                 break;
             case "Upper Red":
             case "Lower Red":
-                score += 7;
-                System.out.println("7!\nScore is: " + score);
+                Scoreboard.score+=7;
+                System.out.println("7!\nScore is: " + Scoreboard.score);
                 break;
             case "Yellow":
-                score += 9;
-                System.out.println("9!\nScore is: " + score);
+                Scoreboard.score+=9;
+                System.out.println("9!\nScore is: " + Scoreboard.score);
                 break;
         }
     }
@@ -90,6 +96,8 @@ public class Sprite extends Rect {
     public void moveUp(int dy) {
         isMoving = true;
 
+        isFiring = false;
+
         motion = UP;
 
         py -= (dy+MySimpleGame.speed);
@@ -98,6 +106,8 @@ public class Sprite extends Rect {
     public void moveDn(int dy) {
         isMoving = true;
 
+        isFiring = false;
+
         motion = DOWN;
 
         py += (dy+MySimpleGame.speed);
@@ -105,6 +115,8 @@ public class Sprite extends Rect {
 
     public void moveLt(int dx) {
         isMoving = true;
+
+        isFiring = false;
 
         motion = LEFT;
 
@@ -117,10 +129,22 @@ public class Sprite extends Rect {
         if(this.px < 150) {
             isMoving = true;
 
+            isFiring = false;
+
             motion = RIGHT;
 
             px += (dx + MySimpleGame.speed);
         }
+    }
+
+    public void drawBowRight() {
+        isFiring = true;
+
+        isMoving = false;
+
+        motion = SHOOT_FACING_RIGHT;
+
+        animation[SHOOT_FACING_RIGHT].current = 5;
     }
 
     public void die() {
@@ -128,24 +152,11 @@ public class Sprite extends Rect {
         py = -100000;
     }
 
-//    public void draw(Graphics gfx) {
-//        if(isAlive) {
-//            if(isMoving) {
-//                gfx.drawImage(animation[motion].getCurrentImage(), (int)px, (int)py, w, h, null);
-//            }
-//            if(!isMoving && Sprite.isIdle == false){ if(Sprite.isIdle == false) {
-//                    gfx.drawImage(animation[motion].getStillImage(), (int)px, (int)py, w, h, null); }if(!isMoving && Sprite.isIdle == true){
-//                    motion = IDLE;
-//                    gfx.drawImage(animation[IDLE].getCurrentImage(), (int)px, (int)py, w, h, null);
-//                }
-//            }
-//            isMoving = false;
-//        }
-////        gfx.drawImage(animation[motion].getCurrentImage(), x, y, 100, 250, null);
-//    }
     public void draw(Graphics gfx) {
         if(isAlive) {
-            if(isMoving) {
+            if(isFiring) {
+                gfx.drawImage(animation[motion].shootAnimation(), (int)px, (int)py, w, h, null);
+            } else if(isMoving) {
                 gfx.drawImage(animation[motion].getCurrentImage(), (int)px, (int)py, w, h, null);
             }
             else {
@@ -155,25 +166,24 @@ public class Sprite extends Rect {
                 else if(motion == LEFT) {
                     gfx.drawImage(animation[IDLE_LEFT].getCurrentImage(), (int)px, (int)py, w, h, null);
                 }
-               else if(motion == RIGHT) {
+                else if(motion == RIGHT) {
                     gfx.drawImage(animation[IDLE_RIGHT].getCurrentImage(), (int)px, (int)py, w, h, null);
                 }
                 else {
                     gfx.drawImage(animation[UP].getStillImage(), (int)px, (int)py, w, h, null);
                 }
-
             }
             isMoving = false;
         }
         else {
-            if(motion % 2 == 1) {
+            if(motion == DOWN || motion == RIGHT) {
                 gfx.drawImage(animation[DIE_FACING_RIGHT].deathAnimation(), (int)px, (int)py, w, h, null);
             }
             else {
                 gfx.drawImage(animation[DIE_FACING_LEFT].deathAnimation(), (int)px, (int)py, w, h, null);
             }
         }
-    //        gfx.drawImage(animation[motion].getCurrentImage(), x, y, 100, 250, null);
+        //        gfx.drawImage(animation[motion].getCurrentImage(), x, y, 100, 250, null);
     }
     public void shoot(Arrow arrow){
         arrow.fire(px, py, 0, 5);
