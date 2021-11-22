@@ -9,6 +9,7 @@ import java.io.IOException;
 public class MySimpleGame extends GamePanel {
 
     public static int speed = 1;
+    public static int score = 0;
 
     Image grassLand = Toolkit.getDefaultToolkit().getImage("./images/grass_template_2.JPG");
     Image cabin = Toolkit.getDefaultToolkit().getImage("./images/woodcutter_cabin.PNG");
@@ -17,6 +18,8 @@ public class MySimpleGame extends GamePanel {
     BufferedImage crowd;
 
     Rect ground;
+
+    Scoreboard scoreboard;
 
     Sprite ranger1 = new Sprite(100, 100, 100, 100,"rg", Ranger.pose, 10, "PNG" );
     PowerMeter powerMeter;
@@ -134,6 +137,7 @@ public class MySimpleGame extends GamePanel {
             else                speed = 1;
             if(pressing[F]){
                 checkNextArrow = true;
+                ranger1.drawBowRight();
 //                if(nextArrow == arrows.length){
 //                    nextArrow = 0;
 //                }
