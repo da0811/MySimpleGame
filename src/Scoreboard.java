@@ -11,14 +11,18 @@ public class Scoreboard {
         this.score = score;
     }
 
-    public void updateScore(int score) {
-        this.score+=score;
-    }
-
     public void draw(Graphics gfx) {
-        Font font = new Font("Times New Roman", Font.BOLD, 42);
-        gfx.setFont(font);
-        gfx.setColor(Color.BLACK);
-        gfx.drawString("Score: " + score, posX, posY);
+        if(Sprite.isPaused == false) {
+            Font font = new Font("Times New Roman", Font.BOLD, 42);
+            gfx.setFont(font);
+            gfx.setColor(Color.BLACK);
+            gfx.drawString("Score: " + score, posX, posY);
+        }
+        if(Sprite.isPaused == true) {
+            Font font = new Font("Times New Roman", Font.BOLD, 42);
+            gfx.setFont(font);
+            gfx.setColor(Color.BLACK);
+            gfx.drawString("Score: " + score, 960, 360);
+        }
     }
 }

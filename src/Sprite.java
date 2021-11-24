@@ -31,9 +31,13 @@ public class Sprite extends Rect {
 
     static boolean isFiring = false;
 
+    static boolean isPaused = false;
+
     int motion = RIGHT;
 
     static boolean isAlive = true;
+
+    static boolean isPlaying = false;
 
 
 

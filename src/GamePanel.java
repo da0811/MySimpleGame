@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.security.Key;
 import javax.naming.ldap.Control;
 import javax.swing.*;
 
@@ -32,13 +33,17 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
     public final static int A = KeyEvent.VK_A;
     public final static int D = KeyEvent.VK_D;
     public final static int F = KeyEvent.VK_F;
+    public final static int Q = KeyEvent.VK_Q;
 
     public final static int CTRL   = KeyEvent.VK_CONTROL;
     public final static int SHIFT  = KeyEvent.VK_SHIFT;
     public final static int COMMA  = KeyEvent.VK_COMMA;
     public final static int PERIOD = KeyEvent.VK_PERIOD;
 
+    public final static int ENTER = KeyEvent.VK_ENTER;
     public final static int SPACE = KeyEvent.VK_SPACE;
+    public final static int BACKSPACE = KeyEvent.VK_BACK_SPACE;
+    public final static int ESC = KeyEvent.VK_ESCAPE;
 
     public final static int _1 = KeyEvent.VK_1;
     public final static int _2 = KeyEvent.VK_2;
@@ -87,6 +92,7 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
 
             resolve_Collisions();
 
+
             repaint();
 
             try {
@@ -124,7 +130,6 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
 
     public void keyReleased(KeyEvent event) {
         pressing[event.getKeyCode()] = false;
-
     }
 
     public void keyTyped(KeyEvent event) {

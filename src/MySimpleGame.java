@@ -2,6 +2,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,9 @@ public class MySimpleGame extends GamePanel {
     public static int speed = 1;
     public static int score = 0;
 
+    Image mainMenuBackground = Toolkit.getDefaultToolkit().getImage("./images/menu_bg.png");
     Image grassLand = Toolkit.getDefaultToolkit().getImage("./images/grass_template_2.JPG");
+    Image pauseBackground = Toolkit.getDefaultToolkit().getImage("./images/pause_bg.png");
     Image cabin = Toolkit.getDefaultToolkit().getImage("./images/woodcutter_cabin.PNG");
     BufferedImage pond;
     BufferedImage target;
@@ -20,6 +23,8 @@ public class MySimpleGame extends GamePanel {
     Rect ground;
 
     Scoreboard scoreboard;
+    PauseMenu pauseMenu;
+    MainMenu mainMenu;
 
     Sprite ranger1 = new Sprite(100, 100, 100, 100,"rg", Ranger.pose, 10, "PNG" );
     PowerMeter powerMeter;
@@ -99,39 +104,63 @@ public class MySimpleGame extends GamePanel {
         powerMeter = new PowerMeter();
 
         scoreboard = new Scoreboard(880, 100, score);
+        pauseMenu = new PauseMenu(640, 400);
+        mainMenu = new MainMenu(640, 400);
 
     }
+
+
+
     public void paint(Graphics gfx) {
-        gfx.setColor(new Color(100, 100, 100));
-        gfx.fillRect(0, 0, 1920, 1052);
-        gfx.drawImage(grassLand, 0, 0, 1920, 1052, null);
-        gfx.drawImage(cabin, cabinX, cabinY, cabinWidth, cabinHeight, null);
-        gfx.drawImage(target, targetX, targetY, targetWidth, targetHeight, null);
-        gfx.drawImage(pond, 200, 600, pondWidth, pondHeight, null);
-        gfx.drawImage(crowd, 1000, -100, crowdWidth, crowdHeight, null);
-        ranger1.draw(gfx);
-        scoreboard.draw(gfx);
-        gfx.setColor(Color.red);
+        if(Sprite.isPlaying) {
+            gfx.setColor(new Color(100, 100, 100));
+            gfx.fillRect(0, 0, 1920, 1052);
+            gfx.setColor(Color.red);
+            gfx.drawImage(grassLand, 0, 0, 1920, 1052, null);
+            gfx.drawImage(cabin, cabinX, cabinY, cabinWidth, cabinHeight, null);
+            gfx.drawImage(target, targetX, targetY, targetWidth, targetHeight, null);
+            gfx.drawImage(pond, 200, 600, pondWidth, pondHeight, null);
+            gfx.drawImage(crowd, 1000, -100, crowdWidth, crowdHeight, null);
+            ranger1.draw(gfx);
+            scoreboard.draw(gfx);
+        }
+        if(Sprite.isPaused) {
+            gfx.drawImage(pauseBackground, 0, 0, 1920, 1080, null);
+            pauseMenu.draw(gfx);
+            scoreboard.draw(gfx);
+        }
+
+        if(!Sprite.isPlaying) {
+            gfx.drawImage(mainMenuBackground, 0, 0, 1920, 1080, null);
+            mainMenu.draw(gfx);
+        }
+
         //axle.draw(gfx);
         //arrows[0].draw(gfx);
         tick++;
-        if(tick >= 60) { //creates a delay of 1 second to allow time for both loops to finish execution.
-            tick = 60;
+        if(Sprite.isPlaying && !Sprite.isPaused) {
+            if(tick >= 60) { //creates a delay of 1 second to allow time for both loops to finish execution.
+                tick = 60;
 //            for (int i = 0; i < targets.length; i++) {
 //                targets[i].draw(gfx);
 //            }
 
-            for (int i = 0; i < arrows.length; i++) {
-                arrows[i].draw(gfx);
+                for (int i = 0; i < arrows.length; i++) {
+                    arrows[i].draw(gfx);
+                }
+                //ground.draw(gfx);
+                powerMeter.draw(gfx);
             }
-            //ground.draw(gfx);
-            powerMeter.draw(gfx);
         }
     }
 
     @Override
     public void respond_To_User_Keyboard_Input() {
-        if(Sprite.isAlive) {
+        if(!Sprite.isPlaying) {
+            if(pressing[ENTER]) ranger1.isPlaying = true;
+            if(pressing[Q]){}
+        }
+        if(Sprite.isAlive && !Sprite.isPaused) {
             if(pressing[UP] || pressing[W]) ranger1.moveUp(speed);
             if(pressing[DN] || pressing[S]) ranger1.moveDn(speed);
             if(pressing[LT] || pressing[A]) ranger1.moveLt(speed);
@@ -149,6 +178,16 @@ public class MySimpleGame extends GamePanel {
                 nextArrow++;
             }
         }
+        if(Sprite.isPaused) {
+            if(pressing[ENTER])     ranger1.isPaused = false;
+            if(pressing[BACKSPACE]) {
+                ranger1.isPlaying = false;
+                Scoreboard.score = 0;
+
+            }
+//            if(pressing[Q])         ranger1.isPlaying = false;
+        }
+        if(pressing[ESC])   ranger1.isPaused = true;
         if(pressing[SPACE]) ranger1.isAlive = false;
         if(pressing[COMMA]) ranger1.revive();
         if(mousePressed) {
