@@ -11,14 +11,30 @@ public class Scoreboard {
         this.score = score;
     }
 
-    public void updateScore(int score) {
-        this.score+=score;
-    }
-
     public void draw(Graphics gfx) {
-        Font font = new Font("Times New Roman", Font.BOLD, 42);
-        gfx.setFont(font);
-        gfx.setColor(Color.BLACK);
-        gfx.drawString("Score: " + score, posX, posY);
+        if(!Sprite.isPaused && !Sprite.isFinished) {
+            Font font = new Font("Old English Text MT", Font.BOLD, 42);
+            gfx.setFont(font);
+            gfx.setColor(Color.BLACK);
+            gfx.drawString("Score: " + score, posX, posY);
+            gfx.drawString("Arrows: " + Math.abs(MySimpleGame.nextArrow - 5), posX-300, posY);
+        }
+        if(Sprite.isPaused && !Sprite.isFinished) {
+            Font font = new Font("Times New Roman", Font.BOLD, 42);
+            gfx.setFont(font);
+            gfx.setColor(Color.BLACK);
+            gfx.drawString("Score: " + score, 960, 360);
+        }
+        if(Sprite.isFinished && !Sprite.isPaused) {
+            Font font = new Font("Old English Text MT", Font.BOLD, 128);
+            gfx.setFont(font);
+            gfx.setColor(Color.BLACK);
+            if(score == 0) {
+                gfx.drawString("Better Luck Next Time", 320, 360);
+            }
+            else {
+                gfx.drawString("Score: " + score, 480, 360);
+            }
+        }
     }
 }
