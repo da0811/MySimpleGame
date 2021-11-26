@@ -1,8 +1,6 @@
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,10 +9,12 @@ public class MySimpleGame extends GamePanel {
 
     public static int speed = 1;
     public static int score = 0;
+    public static int collisionsResolved = 0;
 
     Image mainMenuBackground = Toolkit.getDefaultToolkit().getImage("./images/menu_bg.png");
     Image grassLand = Toolkit.getDefaultToolkit().getImage("./images/grass_template_2.JPG");
     Image pauseBackground = Toolkit.getDefaultToolkit().getImage("./images/pause_bg.png");
+    Image finalScoreBackground = Toolkit.getDefaultToolkit().getImage("./images/game_over_bg.png");
     Image cabin = Toolkit.getDefaultToolkit().getImage("./images/woodcutter_cabin.PNG");
     BufferedImage pond;
     BufferedImage target;
@@ -25,6 +25,7 @@ public class MySimpleGame extends GamePanel {
     Scoreboard scoreboard;
     PauseMenu pauseMenu;
     MainMenu mainMenu;
+    GameOver gameOver;
 
     Sprite ranger1 = new Sprite(100, 100, 100, 100,"rg", Ranger.pose, 10, "PNG" );
     PowerMeter powerMeter;
@@ -106,6 +107,7 @@ public class MySimpleGame extends GamePanel {
         scoreboard = new Scoreboard(880, 100, score);
         pauseMenu = new PauseMenu(640, 400);
         mainMenu = new MainMenu(640, 400);
+        gameOver = new GameOver(320, 400);
 
     }
 
@@ -123,6 +125,7 @@ public class MySimpleGame extends GamePanel {
             gfx.drawImage(crowd, 1000, -100, crowdWidth, crowdHeight, null);
             ranger1.draw(gfx);
             scoreboard.draw(gfx);
+//            finalScore.draw(gfx);
         }
         if(Sprite.isPaused) {
             gfx.drawImage(pauseBackground, 0, 0, 1920, 1080, null);
@@ -135,10 +138,20 @@ public class MySimpleGame extends GamePanel {
             mainMenu.draw(gfx);
         }
 
+        if(nextArrow == arrows.length) {
+            if(arrows[arrows.length-1].velocityX == 0 && arrows[arrows.length-1].velocityY == 0) {
+                gfx.drawImage(finalScoreBackground, 0,0,1920, 1080, null);
+                gameOver.draw(gfx);
+                Sprite.isFinished = true;
+                scoreboard.draw(gfx);
+            }
+        }
+
+
         //axle.draw(gfx);
         //arrows[0].draw(gfx);
         tick++;
-        if(Sprite.isPlaying && !Sprite.isPaused) {
+        if(Sprite.isPlaying && !Sprite.isPaused && !Sprite.isFinished) {
             if(tick >= 60) { //creates a delay of 1 second to allow time for both loops to finish execution.
                 tick = 60;
 //            for (int i = 0; i < targets.length; i++) {
@@ -158,7 +171,7 @@ public class MySimpleGame extends GamePanel {
     public void respond_To_User_Keyboard_Input() {
         if(!Sprite.isPlaying) {
             if(pressing[ENTER]) ranger1.isPlaying = true;
-            if(pressing[Q]){}
+            if(pressing[Q]){} // FIXME: close gamed
         }
         if(Sprite.isAlive && !Sprite.isPaused) {
             if(pressing[UP] || pressing[W]) ranger1.moveUp(speed);
@@ -168,6 +181,7 @@ public class MySimpleGame extends GamePanel {
             if(pressing[SHIFT]) speed = 2;
             else                speed = 1;
             if(pressing[F]){
+
                 checkNextArrow = true;
                 ranger1.drawBowRight();
 //                if(nextArrow == arrows.length){
@@ -176,18 +190,38 @@ public class MySimpleGame extends GamePanel {
                 arrows[nextArrow].fire(ranger1.px, ranger1.py, 0, (PowerMeter.speed / 2));
                 pressing[F] = false;
                 nextArrow++;
+
             }
         }
-        if(Sprite.isPaused) {
+        if(ranger1.isPaused) {
             if(pressing[ENTER])     ranger1.isPaused = false;
             if(pressing[BACKSPACE]) {
                 ranger1.isPlaying = false;
                 Scoreboard.score = 0;
+                nextArrow = 0;
+                for (int i = 0; i < arrows.length; i++) {
+                    arrows[i] = new Arrow(-1000, 400 + (i * 10), 0);
+                }
 
             }
 //            if(pressing[Q])         ranger1.isPlaying = false;
         }
-        if(pressing[ESC])   ranger1.isPaused = true;
+        if(ranger1.isFinished) {
+            if (pressing[BACKSPACE]) {
+                ranger1.isFinished = false;
+                ranger1.isPlaying = false;
+                Scoreboard.score = 0;
+                nextArrow = 0;
+                for (int i = 0; i < arrows.length; i++) {
+                    arrows[i] = new Arrow(-1000, 400 + (i * 10), 0);
+                }
+            }
+        }
+
+        if(pressing[ESC])   {
+            pressing[ESC] = false;
+            ranger1.isPaused = !ranger1.isPaused;
+        }
         if(pressing[SPACE]) ranger1.isAlive = false;
         if(pressing[COMMA]) ranger1.revive();
         if(mousePressed) {

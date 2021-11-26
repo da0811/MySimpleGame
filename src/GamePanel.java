@@ -92,7 +92,6 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
 
             resolve_Collisions();
 
-
             repaint();
 
             try {
