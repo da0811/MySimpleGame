@@ -58,7 +58,7 @@ public class MySimpleGame extends GamePanel {
     //Line testLine2 = new Line(cabinX + cabinWidth/2, cabinY, cabinX + cabinWidth/2, cabinY + cabinHeight/2);
 
     Arrow[] arrows = new Arrow[5];
-    int nextArrow = 0;
+    static int nextArrow = 0;
 
     Line axle;
     Rect[] targets = new Rect[9];
@@ -106,7 +106,7 @@ public class MySimpleGame extends GamePanel {
 
         scoreboard = new Scoreboard(880, 100, score);
         pauseMenu = new PauseMenu(640, 400);
-        mainMenu = new MainMenu(640, 400);
+        mainMenu = new MainMenu(320, 400);
         gameOver = new GameOver(320, 400);
 
     }
@@ -151,7 +151,7 @@ public class MySimpleGame extends GamePanel {
         //axle.draw(gfx);
         //arrows[0].draw(gfx);
         tick++;
-        if(Sprite.isPlaying && !Sprite.isPaused && !Sprite.isFinished) {
+        if(!Sprite.isPaused && Sprite.isPlaying &&!Sprite.isFinished) {
             if(tick >= 60) { //creates a delay of 1 second to allow time for both loops to finish execution.
                 tick = 60;
 //            for (int i = 0; i < targets.length; i++) {
@@ -171,7 +171,9 @@ public class MySimpleGame extends GamePanel {
     public void respond_To_User_Keyboard_Input() {
         if(!Sprite.isPlaying) {
             if(pressing[ENTER]) ranger1.isPlaying = true;
-            if(pressing[Q]){} // FIXME: close gamed
+            if(pressing[Q]){
+                System.exit(0);
+            }
         }
         if(Sprite.isAlive && !Sprite.isPaused) {
             if(pressing[UP] || pressing[W]) ranger1.moveUp(speed);
@@ -182,14 +184,16 @@ public class MySimpleGame extends GamePanel {
             else                speed = 1;
             if(pressing[F]){
 
-                checkNextArrow = true;
-                ranger1.drawBowRight();
+                if(nextArrow < arrows.length) {
+                    checkNextArrow = true;
+                    ranger1.drawBowRight();
 //                if(nextArrow == arrows.length){
 //                    nextArrow = 0;
 //                }
-                arrows[nextArrow].fire(ranger1.px, ranger1.py, 0, (PowerMeter.speed / 2));
-                pressing[F] = false;
-                nextArrow++;
+                    arrows[nextArrow].fire(ranger1.px, ranger1.py, 0, (PowerMeter.speed / 2));
+                    pressing[F] = false;
+                    nextArrow++;
+                }
 
             }
         }
@@ -204,7 +208,7 @@ public class MySimpleGame extends GamePanel {
                 }
 
             }
-//            if(pressing[Q])         ranger1.isPlaying = false;
+            if(pressing[Q]) System.exit(0);
         }
         if(ranger1.isFinished) {
             if (pressing[BACKSPACE]) {
@@ -216,9 +220,10 @@ public class MySimpleGame extends GamePanel {
                     arrows[i] = new Arrow(-1000, 400 + (i * 10), 0);
                 }
             }
+            if(pressing[Q]) System.exit(0);
         }
 
-        if(pressing[ESC])   {
+        if(pressing[ESC] && !Sprite.isFinished)   {
             pressing[ESC] = false;
             ranger1.isPaused = !ranger1.isPaused;
         }
