@@ -32,7 +32,7 @@ public class MySimpleGame extends GamePanel {
     static SoundEffect arrowImpact = new SoundEffect("./sounds/arrow_impact.wav");
 
     Image mainMenuBackground = Toolkit.getDefaultToolkit().getImage("./images/menu_bg.png");
-    Image grassLand = Toolkit.getDefaultToolkit().getImage("./images/grass_template_2.JPG");
+    Image grassLand = Toolkit.getDefaultToolkit().getImage("./images/grass_template_1.JPG");
     Image pauseBackground = Toolkit.getDefaultToolkit().getImage("./images/pause_bg.png");
     Image finalScoreBackground = Toolkit.getDefaultToolkit().getImage("./images/game_over_bg.png");
     Image cabin = Toolkit.getDefaultToolkit().getImage("./images/woodcutter_cabin.PNG");
