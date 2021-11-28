@@ -1,9 +1,13 @@
+import jdk.internal.util.xml.impl.Input;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class MySimpleGame extends GamePanel {
 
@@ -11,11 +15,28 @@ public class MySimpleGame extends GamePanel {
     public static int score = 0;
     public static int collisionsResolved = 0;
 
+    static MusicPlayer bgm = new MusicPlayer("./sounds/Forest_Ambience.wav");
+    static InputStream bgmStream = new LoopingByteInputStream((bgm.getSamples()));
+
+    static MusicPlayer sparseClapping = new MusicPlayer("./sounds/sparse_clapping.wav");
+    static InputStream sparseClappingStream = new ByteArrayInputStream(sparseClapping.getSamples());
+
+    static MusicPlayer applause = new MusicPlayer("./sounds/applause.wav");
+    static InputStream applauseStream = new ByteArrayInputStream(applause.getSamples());
+
+    static MusicPlayer laughter = new MusicPlayer("./sounds/laughter.wav");
+    static InputStream laughterStream = new ByteArrayInputStream(laughter.getSamples());
+
+
+    static SoundEffect shoot = new SoundEffect("./sounds/shoot_arrow.wav");
+    static SoundEffect arrowImpact = new SoundEffect("./sounds/arrow_impact.wav");
+
     Image mainMenuBackground = Toolkit.getDefaultToolkit().getImage("./images/menu_bg.png");
     Image grassLand = Toolkit.getDefaultToolkit().getImage("./images/grass_template_2.JPG");
     Image pauseBackground = Toolkit.getDefaultToolkit().getImage("./images/pause_bg.png");
     Image finalScoreBackground = Toolkit.getDefaultToolkit().getImage("./images/game_over_bg.png");
     Image cabin = Toolkit.getDefaultToolkit().getImage("./images/woodcutter_cabin.PNG");
+    Image archery = Toolkit.getDefaultToolkit().getImage("./images/archery.png");
     BufferedImage pond;
     BufferedImage target;
     BufferedImage crowd;
@@ -109,6 +130,7 @@ public class MySimpleGame extends GamePanel {
         mainMenu = new MainMenu(320, 400);
         gameOver = new GameOver(320, 400);
 
+
     }
 
 
@@ -135,6 +157,7 @@ public class MySimpleGame extends GamePanel {
 
         if(!Sprite.isPlaying) {
             gfx.drawImage(mainMenuBackground, 0, 0, 1920, 1080, null);
+            gfx.drawImage(archery, 1100, 350,  300, 300, null);
             mainMenu.draw(gfx);
         }
 
@@ -183,7 +206,7 @@ public class MySimpleGame extends GamePanel {
             if(pressing[SHIFT]) speed = 2;
             else                speed = 1;
             if(pressing[F]){
-
+                shoot.play();
                 if(nextArrow < arrows.length) {
                     checkNextArrow = true;
                     ranger1.drawBowRight();
@@ -254,6 +277,7 @@ public class MySimpleGame extends GamePanel {
                         if (targets[i].isOverlapping(arrows[nextArrow].tip)) {
                             arrows[nextArrow].isOverLapping = true;
                             arrows[nextArrow].stop();
+                            arrowImpact.play();
                             Sprite.handleScore(targets[i].name);
                         }
                         if(ground.isOverlapping(arrows[nextArrow].tip)) {
@@ -266,6 +290,7 @@ public class MySimpleGame extends GamePanel {
                         if (targets[i].isOverlapping(arrows[nextArrow - 1].tip)) {
                             arrows[nextArrow - 1].isOverLapping = true;
                             arrows[nextArrow - 1].stop();
+                            arrowImpact.play();
                             Sprite.handleScore(targets[i].name);
                         }
                         if(ground.isOverlapping(arrows[nextArrow - 1].tip)) {
