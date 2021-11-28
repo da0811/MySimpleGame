@@ -12,7 +12,6 @@ public class SoundEffect {
             DataLine.Info info = new DataLine.Info(Clip.class, clip.getFormat());
             clip = (Clip)AudioSystem.getLine(info);
             clip.open(sfxStream);
-//            clip.open(sfx);
         }
         catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();

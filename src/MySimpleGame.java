@@ -1,5 +1,3 @@
-import jdk.internal.util.xml.impl.Input;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -27,12 +25,11 @@ public class MySimpleGame extends GamePanel {
     static MusicPlayer laughter = new MusicPlayer("./sounds/laughter.wav");
     static InputStream laughterStream = new ByteArrayInputStream(laughter.getSamples());
 
-
     static SoundEffect shoot = new SoundEffect("./sounds/shoot_arrow.wav");
     static SoundEffect arrowImpact = new SoundEffect("./sounds/arrow_impact.wav");
 
     Image mainMenuBackground = Toolkit.getDefaultToolkit().getImage("./images/menu_bg.png");
-    Image grassLand = Toolkit.getDefaultToolkit().getImage("./images/grass_template_2.JPG");
+    Image grassLand = Toolkit.getDefaultToolkit().getImage("./images/grass_template_1.JPG");
     Image pauseBackground = Toolkit.getDefaultToolkit().getImage("./images/pause_bg.png");
     Image finalScoreBackground = Toolkit.getDefaultToolkit().getImage("./images/game_over_bg.png");
     Image cabin = Toolkit.getDefaultToolkit().getImage("./images/woodcutter_cabin.PNG");
@@ -48,7 +45,7 @@ public class MySimpleGame extends GamePanel {
     MainMenu mainMenu;
     GameOver gameOver;
 
-    Sprite ranger1 = new Sprite(100, 100, 100, 100,"rg", Ranger.pose, 10, "PNG" );
+    Sprite Sprite = new Sprite(100, 100, 100, 100,"rg", Ranger.pose, 10, "PNG" );
     PowerMeter powerMeter;
 
     int cabinX = 1024 - 150;
@@ -145,7 +142,7 @@ public class MySimpleGame extends GamePanel {
             gfx.drawImage(target, targetX, targetY, targetWidth, targetHeight, null);
             gfx.drawImage(pond, 200, 600, pondWidth, pondHeight, null);
             gfx.drawImage(crowd, 1000, -100, crowdWidth, crowdHeight, null);
-            ranger1.draw(gfx);
+            Sprite.draw(gfx);
             scoreboard.draw(gfx);
 //            finalScore.draw(gfx);
         }
@@ -193,37 +190,40 @@ public class MySimpleGame extends GamePanel {
     @Override
     public void respond_To_User_Keyboard_Input() {
         if(!Sprite.isPlaying) {
-            if(pressing[ENTER]) ranger1.isPlaying = true;
+            if(pressing[ENTER]) Sprite.isPlaying = true;
             if(pressing[Q]){
                 System.exit(0);
             }
         }
-        if(Sprite.isAlive && !Sprite.isPaused) {
-            if(pressing[UP] || pressing[W]) ranger1.moveUp(speed);
-            if(pressing[DN] || pressing[S]) ranger1.moveDn(speed);
-            if(pressing[LT] || pressing[A]) ranger1.moveLt(speed);
-            if(pressing[RT] || pressing[D]) ranger1.moveRt(speed);
+        // !Sprite.isPaused && Sprite.isPlaying &&!Sprite.isFinished
+        if(Sprite.isAlive && Sprite.isPlaying && !Sprite.isPaused && !Sprite.isFinished) {
+            if(pressing[UP] || pressing[W]) Sprite.moveUp(speed);
+            if(pressing[DN] || pressing[S]) Sprite.moveDn(speed);
+            if(pressing[LT] || pressing[A]) Sprite.moveLt(speed);
+            if(pressing[RT] || pressing[D]) Sprite.moveRt(speed);
             if(pressing[SHIFT]) speed = 2;
             else                speed = 1;
             if(pressing[F]){
                 shoot.play();
                 if(nextArrow < arrows.length) {
                     checkNextArrow = true;
-                    ranger1.drawBowRight();
+                    Sprite.drawBowRight();
 //                if(nextArrow == arrows.length){
 //                    nextArrow = 0;
 //                }
-                    arrows[nextArrow].fire(ranger1.px, ranger1.py, 0, (PowerMeter.speed / 2));
+                    arrows[nextArrow].fire(Sprite.px, Sprite.py, 0, (PowerMeter.speed / 2));
                     pressing[F] = false;
-                    nextArrow++;
+                    if(nextArrow <= arrows.length) {
+                        nextArrow++;
+                    }
                 }
 
             }
         }
-        if(ranger1.isPaused) {
-            if(pressing[ENTER])     ranger1.isPaused = false;
+        if(Sprite.isPaused) {
+            if(pressing[ENTER])     Sprite.isPaused = false;
             if(pressing[BACKSPACE]) {
-                ranger1.isPlaying = false;
+                Sprite.isPlaying = false;
                 Scoreboard.score = 0;
                 nextArrow = 0;
                 for (int i = 0; i < arrows.length; i++) {
@@ -233,10 +233,10 @@ public class MySimpleGame extends GamePanel {
             }
             if(pressing[Q]) System.exit(0);
         }
-        if(ranger1.isFinished) {
+        if(Sprite.isFinished) {
             if (pressing[BACKSPACE]) {
-                ranger1.isFinished = false;
-                ranger1.isPlaying = false;
+                Sprite.isFinished = false;
+                Sprite.isPlaying = false;
                 Scoreboard.score = 0;
                 nextArrow = 0;
                 for (int i = 0; i < arrows.length; i++) {
@@ -248,10 +248,10 @@ public class MySimpleGame extends GamePanel {
 
         if(pressing[ESC] && !Sprite.isFinished)   {
             pressing[ESC] = false;
-            ranger1.isPaused = !ranger1.isPaused;
+            Sprite.isPaused = !Sprite.isPaused;
         }
-        if(pressing[SPACE]) ranger1.isAlive = false;
-        if(pressing[COMMA]) ranger1.revive();
+        if(pressing[SPACE]) Sprite.isAlive = false;
+        if(pressing[COMMA]) Sprite.revive();
         if(mousePressed) {
             //System.out.println("x coordinate: " + mx + ", y coordinate: " + my);
             mousePressed = false;
