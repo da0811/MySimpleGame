@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.io.ByteArrayInputStream;
 
 public class Scoreboard {
     int posX;
@@ -18,6 +19,9 @@ public class Scoreboard {
             gfx.setColor(Color.BLACK);
             gfx.drawString("Score: " + score, posX, posY);
             gfx.drawString("Arrows: " + Math.abs(MySimpleGame.nextArrow - 5), posX-300, posY);
+            MySimpleGame.laughterStream = new ByteArrayInputStream(MySimpleGame.laughter.getSamples());
+            MySimpleGame.applauseStream = new ByteArrayInputStream(MySimpleGame.applause.getSamples());
+            MySimpleGame.sparseClappingStream = new ByteArrayInputStream(MySimpleGame.sparseClapping.getSamples());
         }
         if(Sprite.isPaused && !Sprite.isFinished) {
             Font font = new Font("Times New Roman", Font.BOLD, 42);
@@ -35,7 +39,7 @@ public class Scoreboard {
             }
             else {
                 if(score < 20) MySimpleGame.sparseClapping.play(MySimpleGame.sparseClappingStream);
-                if(score >=20) MySimpleGame.applause.play(MySimpleGame.applauseStream);
+                if(score > 19) MySimpleGame.applause.play(MySimpleGame.applauseStream);
                 gfx.drawString("Score: " + score, 480, 360);
             }
         }
