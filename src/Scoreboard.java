@@ -30,9 +30,12 @@ public class Scoreboard {
             gfx.setFont(font);
             gfx.setColor(Color.BLACK);
             if(score == 0) {
+                MySimpleGame.laughter.play(MySimpleGame.laughterStream);
                 gfx.drawString("Better Luck Next Time", 320, 360);
             }
             else {
+                if(score < 20) MySimpleGame.sparseClapping.play(MySimpleGame.sparseClappingStream);
+                if(score >=20) MySimpleGame.applause.play(MySimpleGame.applauseStream);
                 gfx.drawString("Score: " + score, 480, 360);
             }
         }

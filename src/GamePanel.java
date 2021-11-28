@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.security.Key;
 import javax.naming.ldap.Control;
 import javax.swing.*;
@@ -78,6 +80,7 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
 //        setFocusable(true); // saw in sample code, need to look this up
 
         requestFocus();
+
     }
 
     public abstract void initialize();
