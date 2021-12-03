@@ -22,7 +22,6 @@ public class Animation {
                 image[i] = ImageIO.read(new File("./images/" + name + i + "." + fileType));
             } catch (IOException e) {
             }
-            //image[i] = Toolkit.getDefaultToolkit().getImage("./images/" + name + i + "." + fileType);
         }
     }
 

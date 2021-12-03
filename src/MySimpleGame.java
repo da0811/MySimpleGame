@@ -12,18 +12,6 @@ public class MySimpleGame extends GamePanel {
     public static int speed = 1;
     public static int score = 0;
 
-//    static MusicPlayer bgm = new MusicPlayer("./sounds/Forest_Ambience.wav");
-//    static InputStream bgmStream = new LoopingByteInputStream((bgm.getSamples()));
-//
-//    static MusicPlayer sparseClapping = new MusicPlayer("./sounds/sparse_clapping.wav");
-//    static InputStream sparseClappingStream = new ByteArrayInputStream(sparseClapping.getSamples());
-//
-//    static MusicPlayer applause = new MusicPlayer("./sounds/applause.wav");
-//    static InputStream applauseStream = new ByteArrayInputStream(applause.getSamples());
-//
-//    static MusicPlayer laughter = new MusicPlayer("./sounds/laughter.wav");
-//    static InputStream laughterStream = new ByteArrayInputStream(laughter.getSamples());
-
     static SoundEffect bgm = new SoundEffect("./sounds/Forest_Ambience.wav");
     static SoundEffect sparseClapping = new SoundEffect("./sounds/sparse_clapping.wav");
     static SoundEffect applause = new SoundEffect("./sounds/applause.wav");
@@ -73,11 +61,6 @@ public class MySimpleGame extends GamePanel {
     int nx = 0;
     int ny = 0;
 
-    //Line cabinDoor = new Line(cabinX + (cabinWidth/2) - (cabinWidth / 16),  cabinY + (cabinHeight/2) + (cabinHeight/8), cabinX + (cabinWidth/2) + (cabinWidth/80) , cabinY + (cabinHeight/2) + (cabinHeight/6));
-    //Line topCabin = new Line(cabinX, cabinY, cabinX + cabinWidth, cabinY);
-    //Line testLine = new Line(cabinX, cabinY, cabinX + cabinWidth/2, cabinY);
-    //Line testLine2 = new Line(cabinX + cabinWidth/2, cabinY, cabinX + cabinWidth/2, cabinY + cabinHeight/2);
-
     Arrow[] arrows = new Arrow[5];
     static int nextArrow = 0;
 
@@ -89,10 +72,8 @@ public class MySimpleGame extends GamePanel {
     boolean checkNextArrow = false;
 
     public void initialize() {
-        //mySprite = ranger1;
         for(int i = 0; i < arrows.length; i++){
             arrows[i] = new Arrow(-1000, 400 + (i * 10), 0);
-            //System.out.println("arrow" + i);
         }
         try {
             target = ImageIO.read(new File("./images/target_side_view.png"));
@@ -149,7 +130,6 @@ public class MySimpleGame extends GamePanel {
                 gfx.drawImage(crowd, 1000, -100, crowdWidth, crowdHeight, null);
                 Sprite.draw(gfx);
                 scoreboardText.draw(gfx);
-//            finalScore.draw(gfx);
             }
             if(Sprite.isPaused) {
                 gfx.drawImage(pauseBackground, 0, 0, 1920, 1080, null);
@@ -173,17 +153,11 @@ public class MySimpleGame extends GamePanel {
             }
 
 
-            //axle.draw(gfx);
-            //arrows[0].draw(gfx);
             if(!Sprite.isPaused && Sprite.isPlaying &&!Sprite.isFinished) {
-//            for (int i = 0; i < targets.length; i++) {
-//                targets[i].draw(gfx);
-//            }
 
                 for (int i = 0; i < arrows.length; i++) {
                     arrows[i].draw(gfx);
                 }
-                //ground.draw(gfx);
                 powerMeter.draw(gfx);
             }
         }
@@ -194,10 +168,6 @@ public class MySimpleGame extends GamePanel {
     public void respond_To_User_Keyboard_Input() {
         if(!Sprite.isPlaying) {
             if(pressing[ENTER]) {
-                pressing[ENTER] = false;
-                MySimpleGame.laughter.reset();
-                applause.reset();
-                sparseClapping.reset();
                 Sprite.isPlaying = true;
                 for (int i = 0; i < arrows.length; i++) {
                     arrows[i] = new Arrow(-1000, 400 + (i * 10), 0);
@@ -217,13 +187,9 @@ public class MySimpleGame extends GamePanel {
             else                speed = 1;
             if(pressing[F]){
                 shoot.play();
-//                Sprite.motion = 3;
                 if(nextArrow < arrows.length) {
                     checkNextArrow = true;
                     Sprite.drawBowRight();
-//                if(nextArrow == arrows.length){
-//                    nextArrow = 0;
-//                }
                     arrows[nextArrow].fire(Sprite.px, Sprite.py, 0, (PowerMeter.speed / 2));
                     pressing[F] = false;
                     if(nextArrow <= arrows.length) {
@@ -243,7 +209,22 @@ public class MySimpleGame extends GamePanel {
             if(pressing[Q]) System.exit(0);
         }
         if(Sprite.isFinished) {
+            if(pressing[ENTER]) {
+                laughter.reset();
+                applause.reset();
+                sparseClapping.reset();
+                Sprite.isFinished = false;
+                Sprite.isPlaying = false;
+                Scoreboard.score = 0;
+                nextArrow = 0;
+                for (int i = 0; i < arrows.length; i++) {
+                    arrows[i] = new Arrow(-1000, 400 + (i * 10), 0);
+                }
+            }
             if (pressing[BACKSPACE]) {
+                laughter.reset();
+                applause.reset();
+                sparseClapping.reset();
                 Sprite.isFinished = false;
                 Sprite.isPlaying = false;
                 Scoreboard.score = 0;
@@ -262,7 +243,6 @@ public class MySimpleGame extends GamePanel {
         if(pressing[SPACE]) Sprite.isAlive = false;
         if(pressing[COMMA]) Sprite.revive();
         if(mousePressed) {
-            //System.out.println("x coordinate: " + mx + ", y coordinate: " + my);
             mousePressed = false;
         }
 
@@ -270,7 +250,6 @@ public class MySimpleGame extends GamePanel {
 
     @Override
     public void move_Computer_Controlled_Entities() {
-        // enemies, fauna
         for (int i = 0; i < arrows.length; i++) {
             arrows[i].move();
         }

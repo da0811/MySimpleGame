@@ -8,13 +8,11 @@ public class SoundEffect {
     public SoundEffect(String filename) {
         try {
             AudioInputStream sfxStream = AudioSystem.getAudioInputStream(new File(filename));
-            clip = AudioSystem.getClip(); // AudioSystem allows us to load sound using getClip
-            DataLine.Info info = new DataLine.Info(Clip.class, clip.getFormat());
-            clip = (Clip)AudioSystem.getLine(info);
-            clip.open(sfxStream);
-            if(filename.contains("Forest_Ambience")) {
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-            }
+            clip = AudioSystem.getClip(); // returns clip object
+            DataLine.Info info =
+                    new DataLine.Info(Clip.class, clip.getFormat()); // specify what kind of line we want to create
+            clip = (Clip)AudioSystem.getLine(info); // create the line
+            clip.open(sfxStream); // load samples from stream
         }
         catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();
@@ -31,6 +29,11 @@ public class SoundEffect {
     }
 
     public void reset() {
+        clip.stop();
         clip.setFramePosition(0);
+    }
+
+    public void loop() {
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 }

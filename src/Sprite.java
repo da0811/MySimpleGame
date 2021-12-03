@@ -27,8 +27,6 @@ public class Sprite extends Rect {
 
     boolean isMoving  = false;
 
-    static boolean isIdle = true;
-
     static boolean isFiring = false;
 
     static boolean isPaused = false;
@@ -72,25 +70,18 @@ public class Sprite extends Rect {
         }
     }
 
-    //Arrow[] arrows = new Arrow[20];
-
     public void revive() {
         isAlive = true;
         animation[DIE_FACING_LEFT].current = 0;
         animation[DIE_FACING_RIGHT].current = 0;
     }
 
-    // FIX ME: This method is taking in width & height but at this time the values are not reflecting upon construction of sprite
     public Sprite(int x, int y, int w, int h, String name, String[] pose, int count, String fileType) {
         super(x, y, w, h, null);
         this.x = x;
         this.y = y;
 
-//        this.w = w;
-//        this.h = h;
-
         animation = new Animation[pose.length];
-
 
         for(int i = 0; i < pose.length; i++) {
             animation[i] = new Animation(name + "_" + pose[i] + "_", count, fileType);
@@ -131,7 +122,6 @@ public class Sprite extends Rect {
     }
 
     public void moveRt(int dx) {
-//        vx += dx;
         if(this.px < 150) {
             isMoving = true;
 
@@ -189,7 +179,6 @@ public class Sprite extends Rect {
                 gfx.drawImage(animation[DIE_FACING_LEFT].deathAnimation(), (int)px, (int)py, w, h, null);
             }
         }
-        //        gfx.drawImage(animation[motion].getCurrentImage(), x, y, 100, 250, null);
     }
     public void shoot(Arrow arrow){
         arrow.fire(px, py, 0, 5);

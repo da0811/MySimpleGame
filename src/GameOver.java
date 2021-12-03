@@ -16,8 +16,9 @@ public class GameOver {
             FontMetrics fontMetrics = gfx.getFontMetrics(font);
             int lineHeight = fontMetrics.getHeight();
             gfx.setColor(Color.BLACK);
-            gfx.drawString("Press BACKSPACE to go to Main Menu", posX, posY+lineHeight);
-            gfx.drawString("Press Q to Quit", posX, posY+lineHeight*2);
+            gfx.drawString("Press ENTER to Play Again", posX, posY+lineHeight);
+            gfx.drawString("Press BACKSPACE to go to Main Menu", posX, posY+lineHeight*2);
+            gfx.drawString("Press Q to Quit", posX, posY+lineHeight*3);
         }
     }
 }
