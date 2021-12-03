@@ -194,10 +194,6 @@ public class MySimpleGame extends GamePanel {
     public void respond_To_User_Keyboard_Input() {
         if(!Sprite.isPlaying) {
             if(pressing[ENTER]) {
-                pressing[ENTER] = false;
-                MySimpleGame.laughter.reset();
-                applause.reset();
-                sparseClapping.reset();
                 Sprite.isPlaying = true;
                 for (int i = 0; i < arrows.length; i++) {
                     arrows[i] = new Arrow(-1000, 400 + (i * 10), 0);
@@ -243,7 +239,22 @@ public class MySimpleGame extends GamePanel {
             if(pressing[Q]) System.exit(0);
         }
         if(Sprite.isFinished) {
+            if(pressing[ENTER]) {
+                laughter.reset();
+                applause.reset();
+                sparseClapping.reset();
+                Sprite.isFinished = false;
+                Sprite.isPlaying = false;
+                Scoreboard.score = 0;
+                nextArrow = 0;
+                for (int i = 0; i < arrows.length; i++) {
+                    arrows[i] = new Arrow(-1000, 400 + (i * 10), 0);
+                }
+            }
             if (pressing[BACKSPACE]) {
+                laughter.reset();
+                applause.reset();
+                sparseClapping.reset();
                 Sprite.isFinished = false;
                 Sprite.isPlaying = false;
                 Scoreboard.score = 0;
