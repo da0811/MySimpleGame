@@ -12,22 +12,12 @@ public class GameStart extends JFrame {
 
         gamePanel.init();
 
-        MySimpleGame.bgm.play(MySimpleGame.bgmStream);
+        MySimpleGame.bgm.play();
 
     }
 
-    /*
-    AudioPlayer bgm = new AudioPlayer("./sounds/Forest_Ambience.wav");
-        InputStream stream = new ByteArrayInputStream((bgm.getSamples()));
-        bgm.play(stream);
-        System.out.println("is there any sound?");
-     */
 
     public GameStart() {
-//        AudioPlayer bgm = new AudioPlayer("./sounds/Forest_Ambience.wav");
-//        InputStream stream = new ByteArrayInputStream((bgm.getSamples()));
-//        bgm.play(stream);
-//        System.out.println("is there any sound?");
 
         setTitle("Game");
 
