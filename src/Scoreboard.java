@@ -19,9 +19,6 @@ public class Scoreboard {
             gfx.setColor(Color.BLACK);
             gfx.drawString("Score: " + score, posX, posY);
             gfx.drawString("Arrows: " + Math.abs(MySimpleGame.nextArrow - 5), posX-300, posY);
-            MySimpleGame.laughterStream = new ByteArrayInputStream(MySimpleGame.laughter.getSamples());
-            MySimpleGame.applauseStream = new ByteArrayInputStream(MySimpleGame.applause.getSamples());
-            MySimpleGame.sparseClappingStream = new ByteArrayInputStream(MySimpleGame.sparseClapping.getSamples());
         }
         if(Sprite.isPaused && !Sprite.isFinished) {
             Font font = new Font("Times New Roman", Font.BOLD, 42);
@@ -34,12 +31,12 @@ public class Scoreboard {
             gfx.setFont(font);
             gfx.setColor(Color.BLACK);
             if(score == 0) {
-                MySimpleGame.laughter.play(MySimpleGame.laughterStream);
+                MySimpleGame.laughter.playOnce();
                 gfx.drawString("Better Luck Next Time", 320, 360);
             }
             else {
-                if(score < 20) MySimpleGame.sparseClapping.play(MySimpleGame.sparseClappingStream);
-                if(score > 19) MySimpleGame.applause.play(MySimpleGame.applauseStream);
+                if(score >= 20) MySimpleGame.applause.playOnce();
+                if(score <  20) MySimpleGame.sparseClapping.playOnce();
                 gfx.drawString("Score: " + score, 480, 360);
             }
         }

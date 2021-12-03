@@ -35,11 +35,11 @@ public class Sprite extends Rect {
 
     static boolean isFinished = false;
 
-    int motion = RIGHT;
-
     static boolean isAlive = true;
 
     static boolean isPlaying = false;
+
+    int motion = RIGHT;
 
 
 
@@ -155,7 +155,7 @@ public class Sprite extends Rect {
 
     public void die() {
         isAlive = false;
-        py = -100000;
+        py = -10000;
     }
 
     public void draw(Graphics gfx) {

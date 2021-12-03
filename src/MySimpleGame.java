@@ -11,20 +11,23 @@ public class MySimpleGame extends GamePanel {
 
     public static int speed = 1;
     public static int score = 0;
-    public static int collisionsResolved = 0;
 
-    static MusicPlayer bgm = new MusicPlayer("./sounds/Forest_Ambience.wav");
-    static InputStream bgmStream = new LoopingByteInputStream((bgm.getSamples()));
+//    static MusicPlayer bgm = new MusicPlayer("./sounds/Forest_Ambience.wav");
+//    static InputStream bgmStream = new LoopingByteInputStream((bgm.getSamples()));
+//
+//    static MusicPlayer sparseClapping = new MusicPlayer("./sounds/sparse_clapping.wav");
+//    static InputStream sparseClappingStream = new ByteArrayInputStream(sparseClapping.getSamples());
+//
+//    static MusicPlayer applause = new MusicPlayer("./sounds/applause.wav");
+//    static InputStream applauseStream = new ByteArrayInputStream(applause.getSamples());
+//
+//    static MusicPlayer laughter = new MusicPlayer("./sounds/laughter.wav");
+//    static InputStream laughterStream = new ByteArrayInputStream(laughter.getSamples());
 
-    static MusicPlayer sparseClapping = new MusicPlayer("./sounds/sparse_clapping.wav");
-    static InputStream sparseClappingStream = new ByteArrayInputStream(sparseClapping.getSamples());
-
-    static MusicPlayer applause = new MusicPlayer("./sounds/applause.wav");
-    static InputStream applauseStream = new ByteArrayInputStream(applause.getSamples());
-
-    static MusicPlayer laughter = new MusicPlayer("./sounds/laughter.wav");
-    static InputStream laughterStream = new ByteArrayInputStream(laughter.getSamples());
-
+    static SoundEffect bgm = new SoundEffect("./sounds/Forest_Ambience.wav");
+    static SoundEffect sparseClapping = new SoundEffect("./sounds/sparse_clapping.wav");
+    static SoundEffect applause = new SoundEffect("./sounds/applause.wav");
+    static SoundEffect laughter = new SoundEffect("./sounds/laughter.wav");
     static SoundEffect shoot = new SoundEffect("./sounds/shoot_arrow.wav");
     static SoundEffect arrowImpact = new SoundEffect("./sounds/arrow_impact.wav");
 
@@ -40,10 +43,10 @@ public class MySimpleGame extends GamePanel {
 
     Rect ground;
 
-    Scoreboard scoreboard;
-    PauseMenu pauseMenu;
-    MainMenu mainMenu;
-    GameOver gameOver;
+    Scoreboard scoreboardText;
+    PauseMenu pauseMenuText;
+    MainMenu mainMenuText;
+    GameOver gameOverText;
 
     Sprite Sprite = new Sprite(100, 100, 100, 100,"rg", Ranger.pose, 10, "PNG" );
     PowerMeter powerMeter;
@@ -122,10 +125,10 @@ public class MySimpleGame extends GamePanel {
         ground = new Rect(0, targetY + targetHeight - 10, GameStart.screen.width, 100, Color.WHITE);
         powerMeter = new PowerMeter();
 
-        scoreboard = new Scoreboard(880, 100, score);
-        pauseMenu = new PauseMenu(640, 400);
-        mainMenu = new MainMenu(320, 400);
-        gameOver = new GameOver(320, 400);
+        scoreboardText = new Scoreboard(880, 100, score);
+        pauseMenuText = new PauseMenu(640, 400);
+        mainMenuText = new MainMenu(320, 400);
+        gameOverText = new GameOver(320, 400);
 
 
     }
@@ -133,47 +136,46 @@ public class MySimpleGame extends GamePanel {
 
 
     public void paint(Graphics gfx) {
-        if(Sprite.isPlaying) {
-            gfx.setColor(new Color(100, 100, 100));
-            gfx.fillRect(0, 0, 1920, 1052);
-            gfx.setColor(Color.red);
-            gfx.drawImage(grassLand, 0, 0, 1920, 1052, null);
-            gfx.drawImage(cabin, cabinX, cabinY, cabinWidth, cabinHeight, null);
-            gfx.drawImage(target, targetX, targetY, targetWidth, targetHeight, null);
-            gfx.drawImage(pond, 200, 600, pondWidth, pondHeight, null);
-            gfx.drawImage(crowd, 1000, -100, crowdWidth, crowdHeight, null);
-            Sprite.draw(gfx);
-            scoreboard.draw(gfx);
-//            finalScore.draw(gfx);
-        }
-        if(Sprite.isPaused) {
-            gfx.drawImage(pauseBackground, 0, 0, 1920, 1080, null);
-            pauseMenu.draw(gfx);
-            scoreboard.draw(gfx);
-        }
-
-        if(!Sprite.isPlaying) {
-            gfx.drawImage(mainMenuBackground, 0, 0, 1920, 1080, null);
-            gfx.drawImage(archery, 1100, 350,  300, 300, null);
-            mainMenu.draw(gfx);
-        }
-
-        if(nextArrow == arrows.length) {
-            if(arrows[arrows.length-1].velocityX == 0 && arrows[arrows.length-1].velocityY == 0) {
-                gfx.drawImage(finalScoreBackground, 0,0,1920, 1080, null);
-                gameOver.draw(gfx);
-                Sprite.isFinished = true;
-                scoreboard.draw(gfx);
-            }
-        }
-
-
-        //axle.draw(gfx);
-        //arrows[0].draw(gfx);
         tick++;
-        if(!Sprite.isPaused && Sprite.isPlaying &&!Sprite.isFinished) {
-            if(tick >= 60) { //creates a delay of 1 second to allow time for both loops to finish execution.
-                tick = 60;
+        if(tick >= 60) { //creates a delay of 1 second to allow everything to load before it might be drawn.
+            if(Sprite.isPlaying) {
+                gfx.setColor(new Color(100, 100, 100));
+                gfx.fillRect(0, 0, 1920, 1052);
+                gfx.setColor(Color.red);
+                gfx.drawImage(grassLand, 0, 0, 1920, 1052, null);
+                gfx.drawImage(cabin, cabinX, cabinY, cabinWidth, cabinHeight, null);
+                gfx.drawImage(target, targetX, targetY, targetWidth, targetHeight, null);
+                gfx.drawImage(pond, 200, 600, pondWidth, pondHeight, null);
+                gfx.drawImage(crowd, 1000, -100, crowdWidth, crowdHeight, null);
+                Sprite.draw(gfx);
+                scoreboardText.draw(gfx);
+//            finalScore.draw(gfx);
+            }
+            if(Sprite.isPaused) {
+                gfx.drawImage(pauseBackground, 0, 0, 1920, 1080, null);
+                pauseMenuText.draw(gfx);
+                scoreboardText.draw(gfx);
+            }
+
+            if(!Sprite.isPlaying) {
+                gfx.drawImage(mainMenuBackground, 0, 0, 1920, 1080, null);
+                gfx.drawImage(archery, 1100, 350,  300, 300, null);
+                mainMenuText.draw(gfx);
+            }
+
+            if(nextArrow == arrows.length) {
+                if(arrows[arrows.length-1].velocityX == 0 && arrows[arrows.length-1].velocityY == 0) {
+                    Sprite.isFinished = true; // come back to this later
+                    gfx.drawImage(finalScoreBackground, 0,0,1920, 1080, null);
+                    gameOverText.draw(gfx);
+                    scoreboardText.draw(gfx);
+                }
+            }
+
+
+            //axle.draw(gfx);
+            //arrows[0].draw(gfx);
+            if(!Sprite.isPaused && Sprite.isPlaying &&!Sprite.isFinished) {
 //            for (int i = 0; i < targets.length; i++) {
 //                targets[i].draw(gfx);
 //            }
@@ -185,12 +187,22 @@ public class MySimpleGame extends GamePanel {
                 powerMeter.draw(gfx);
             }
         }
+
     }
 
     @Override
     public void respond_To_User_Keyboard_Input() {
         if(!Sprite.isPlaying) {
-            if(pressing[ENTER]) Sprite.isPlaying = true;
+            if(pressing[ENTER]) {
+                pressing[ENTER] = false;
+                MySimpleGame.laughter.reset();
+                applause.reset();
+                sparseClapping.reset();
+                Sprite.isPlaying = true;
+                for (int i = 0; i < arrows.length; i++) {
+                    arrows[i] = new Arrow(-1000, 400 + (i * 10), 0);
+                }
+            }
             if(pressing[Q]){
                 System.exit(0);
             }
@@ -205,6 +217,7 @@ public class MySimpleGame extends GamePanel {
             else                speed = 1;
             if(pressing[F]){
                 shoot.play();
+//                Sprite.motion = 3;
                 if(nextArrow < arrows.length) {
                     checkNextArrow = true;
                     Sprite.drawBowRight();
@@ -226,10 +239,6 @@ public class MySimpleGame extends GamePanel {
                 Sprite.isPlaying = false;
                 Scoreboard.score = 0;
                 nextArrow = 0;
-                for (int i = 0; i < arrows.length; i++) {
-                    arrows[i] = new Arrow(-1000, 400 + (i * 10), 0);
-                }
-
             }
             if(pressing[Q]) System.exit(0);
         }
