@@ -6,11 +6,8 @@ public class PowerMeter extends Rectangle {
     static int speed = 0;
 
     public PowerMeter(){
-        //super();
-        //this.currStamina = stamina;
         this.x = 200;
         this.y = 20;
-        //this.currStamina = mySprite.stamina;
     }
 
     public void draw(Graphics pen){

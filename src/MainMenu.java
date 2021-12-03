@@ -25,9 +25,6 @@ public class MainMenu {
             Font authorsFont = new Font("Old English", Font.BOLD, 24);
             gfx.setFont(authorsFont);
             gfx.drawString("created by Nicholas Morales & David Abreu", posX*3, posY+lineHeight*10);
-//            MySimpleGame.laughterStream = new ByteArrayInputStream(MySimpleGame.laughter.getSamples());
-//            MySimpleGame.applauseStream = new ByteArrayInputStream(MySimpleGame.applause.getSamples());
-//            MySimpleGame.sparseClappingStream = new ByteArrayInputStream(MySimpleGame.sparseClapping.getSamples());
         }
     }
 }

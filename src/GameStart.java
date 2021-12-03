@@ -12,7 +12,7 @@ public class GameStart extends JFrame {
 
         gamePanel.init();
 
-        MySimpleGame.bgm.play();
+        MySimpleGame.bgm.loop();
 
     }
 

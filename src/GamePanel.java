@@ -101,7 +101,6 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
                 thread1.sleep(15);
             }
             catch (Exception e) {
-                // empty catch
             }
         }
     }
@@ -113,16 +112,12 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
     public abstract void resolve_Collisions();
 
     public void mousePressed(MouseEvent event) {
-//        int mx = event.getX();
-//        int my = event.getY();
     }
 
     public void mouseReleased(MouseEvent event) {
-        // FIX ME
     }
 
     public void mouseMoved(MouseEvent event) {
-        // FIX ME
     }
 
     public void keyPressed(KeyEvent event) {
@@ -135,7 +130,5 @@ public abstract class GamePanel extends JPanel implements Runnable, KeyListener,
     }
 
     public void keyTyped(KeyEvent event) {
-        // FIXME
-
     }
 }
