@@ -1,3 +1,7 @@
+CMP 428 Group Project
+
+Group members: David Abreu, Nick Morales
+
 # MySimpleGame
 VGP project with ranger sprite 
 
